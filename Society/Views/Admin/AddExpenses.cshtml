@@ -1,0 +1,252 @@
+﻿@model Society.Models.SummaryItemMasterModel;
+@{
+    ViewData["Title"] = "AddExpenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Add Expenses
+                    @*<input type="text" id="txtBillNo" />
+                        <input type="text" id="txtSupplierName" />*@
+                </div>
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <td>Bill No.</td>
+                            <td><input type="text" id="txtBillNo" /></td>
+                        </tr>
+                        <tr>
+                            <td>Supplier Name</td>
+                            <td><input type="text" id="txtSupplierName" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-body">
+                    <table id="tblCustomers" class="table" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width:100px">Item Name</th>
+                                <th style="width:200px">Description</th>
+                                @*<th style="width:50px">GST</th>*@
+                                <th style="width:100px">Amount</th>
+                                @*<th style="width:100px">Total Amount</th>*@
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (ItemMasterModel item in Model.listItem)
+                            {
+                                <tr>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.Description</td>
+                                    @*<td>@item.GST</td>*@
+                                    <td>@item.Amount</td>
+                                    @*<td>@item.TotalAmount</td>*@
+                                    <td><input type="button" value="Remove" onclick="Remove(this)" /></td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><input type="text" id="txtItemName" /></td>
+                                <td><input type="text" id="txtDesc" /></td>
+                                @*<td><input type="text" id="txtGST" /></td>*@
+                                <td><input type="text" onkeypress="return isNumberKey(event)" id="txtAmt" value="0" /></td>
+                                @*<td><input type="text" id="txtTotalAmt" /></td>*@
+                                <td><input type="button" id="btnAdd" value="Add" /></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <td>GST</td>
+                            <td><input type="text" id="txtGSTA" onkeypress="return isNumberKey(event)" value="0" /></td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+                            <td><input type="text" id="txtAmountA" onkeypress="return isNumberKey(event)" value="0" /></td>
+                        </tr>
+                        <tr>
+                            <td>Toatl Amount</td>
+                            <td><input type="text" id="txtTotalAmountA" onkeypress="return isNumberKey(event)" value="0" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<input type="button" id="btnSave" value="Save All" />
+
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    @*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+    <script type="text/javascript" src="https://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script type="text/javascript">
+        $("body").on("click", "#btnAdd", function () {
+            //Reference the Name and Country TextBoxes.
+            var txtItemName = $("#txtItemName");
+            var txtDesc = $("#txtDesc");
+            //var txtGST = $("#txtGST");
+            var txtAmt = $("#txtAmt");
+            //var txtTotalAmt = $("#txtTotalAmt");
+            //Get the reference of the Table's TBODY element.
+            var tBody = $("#tblCustomers > TBODY")[0];
+
+            //Add Row.
+            var row = tBody.insertRow(-1);
+
+            //Add ItemName cell.
+            var cell = $(row.insertCell(-1));
+            cell.html(txtItemName.val());
+
+            //Add Description cell.
+            cell = $(row.insertCell(-1));
+            cell.html(txtDesc.val());
+
+            //Add GST cell.
+            //cell = $(row.insertCell(-1));
+            //cell.html(txtGST.val());
+
+            //Add Amount cell.
+            cell = $(row.insertCell(-1));
+            cell.html(txtAmt.val());
+
+            //Add Total Amount cell.
+            //cell = $(row.insertCell(-1));
+            //cell.html(txtTotalAmt.val());
+
+            //Add Button cell.
+            cell = $(row.insertCell(-1));
+            var btnRemove = $("<input />");
+            btnRemove.attr("type", "button");
+            btnRemove.attr("onclick", "Remove(this);");
+            btnRemove.val("Remove");
+            cell.append(btnRemove);
+
+            var sum1 = parseFloat($('#txtAmt').val());
+            var toalSum1 = parseFloat($('#txtAmountA').val());
+            toalSum1 = toalSum1 + sum1;
+            $('#txtAmountA').val(toalSum1);
+            $('#txtTotalAmountA').val(toalSum1);
+
+            //Clear the TextBoxes.
+            txtItemName.val("");
+            txtDesc.val("");
+            //txtGST.val("");
+            txtAmt.val("");
+            //txtTotalAmt.val("");
+
+        });
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("TD", row).eq(0).html();
+            if (confirm("Do you want to delete: " + name)) {
+                //Get the reference of the Table.
+                var table = $("#tblCustomers")[0];
+
+                var sum1 = parseFloat($("TD", row).eq(2).html());
+                var toalSum1 = parseFloat($('#txtAmountA').val());
+                toalSum1 = toalSum1 - sum1;
+                $('#txtAmountA').val(toalSum1);
+                $('#txtTotalAmountA').val(toalSum1);
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+
+                $('#txtGSTA').val("0");
+                //$('#txtTotalAmountA').val("0");
+            }
+        };
+
+        $("#txtGSTA,#txtAmountA").keyup(function () {
+            if ($('#txtGSTA').val() > 0) {
+                var GSTAmt = parseFloat($('#txtGSTA').val() / 100 * $('#txtAmountA').val());
+                $('#txtTotalAmountA').val(GSTAmt + parseFloat($('#txtAmountA').val()));
+            }
+        });
+
+        $("body").on("click", "#btnSave", function () {
+
+            //Loop through the Table rows and build a JSON array.
+            var items = new Array();
+
+            $("#tblCustomers TBODY TR").each(function () {
+                var row = $(this);
+                var ItemMasterModel = {};
+                ItemMasterModel.ItemName = row.find("TD").eq(0).html();
+                ItemMasterModel.Description = row.find("TD").eq(1).html();
+                //ItemMasterModel.GST = row.find("TD").eq(2).html();
+                ItemMasterModel.Amount = row.find("TD").eq(2).html();
+                //ItemMasterModel.TotalAmount = row.find("TD").eq(4).html();
+                items.push(ItemMasterModel);
+            });
+
+
+            var pobj = new Object();
+            pobj.listItem = items;
+            pobj.BillNo = $("#txtBillNo").val();
+            pobj.SupplierName = $("#txtSupplierName").val();
+            pobj.GST = $("#txtGSTA").val();
+            pobj.Amount = $("#txtAmountA").val();
+            pobj.TotalAmount = $("#txtTotalAmountA").val();
+
+            if ($('#txtBillNo').val().length > 0 && $('#txtSupplierName').val().length > 0) {
+                $.post("/Admin/AddExpenses", { entities: pobj },
+                    function (data) {
+                        //$(".result").html(data);
+                        alert("Expenses saved successfully..")
+                    });
+            }
+            else {
+                alert("Bill No. and Supplier Name are compulsary fields.")
+            }
+
+            //$.ajax({
+
+            //    type: "POST",
+            //    url: "/Admin/AddExpense",
+            //    data: { entities: pobj },
+            //    contentType: "application/json; charset=utf-8",
+            //    dataType: "json",
+            //    success: function (r) {
+            //        alert(r + " record(s) inserted.");
+            //    }
+            //});
+        });
+
+        //$("#txtAmountA").keyup(function () {
+        //    if ($(this).val() == '') {
+        //        $(this).val(0);
+        //    }
+        //});
+        //$("#txtTotalAmountA").keyup(function () {
+        //    if ($(this).val() == '') {
+        //        $(this).val(0);
+        //    }
+        //});
+        //$("#txtGSTA").keyup(function () {
+        //    if ($(this).val() == '') {
+        //        $(this).val(0);
+        //    }
+        //});
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if ((charCode != 46 || $(this).val().indexOf('.') != -1) && charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+
+            return true;
+        }
+
+    </script>
+</head>

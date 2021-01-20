@@ -1,0 +1,38 @@
+﻿@model Society.Models.FlatMaster
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Add Flat
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("AddFlat", "Admin", FormMethod.Post))
+                    {
+                        <div class="form-group">
+                            <label class="required">Flat Number</label>
+                            @Html.TextBoxFor(m => m.Flat_No, new { @class = "form-control", @type = "number", @placeholder = "Flat No." })
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Description</label>
+                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "Description" })
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" value="Add Flat" class="btn btn-success" />
+                            @if (ViewBag.message != "")
+                            {
+                                <span class="badge badge-danger">@ViewBag.message</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>

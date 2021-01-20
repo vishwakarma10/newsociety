@@ -1,0 +1,75 @@
+﻿@model Society.Models.User 
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    <h2>PGD PINNACLE</h2>
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        //this is for create form tag
+        @Html.AntiForgeryToken() // this is for prevent CSRF attack
+        @Html.ValidationSummary(true)
+        if (@ViewBag.Message != null)
+        {
+
+            <div style="border:1px solid red">
+                @ViewBag.Message
+            </div>
+        }
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(a => a.UserName,new { @class = "required" })</td>
+                <td>@Html.TextBoxFor(a => a.UserName)</td>
+                <td>@Html.ValidationMessageFor(a => a.UserName)</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.Password, new { @class = "required" })
+                </td>
+                <td>
+                    @Html.PasswordFor(a => a.Password)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(a => a.Password)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    IsAdmin
+                </td>
+                <td>
+                    @Html.CheckBoxFor(a => a.IsAdmin)
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Login" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td>@ViewBag.loginError</td>
+            </tr>
+        </table>
+
+    }
+</div>
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>

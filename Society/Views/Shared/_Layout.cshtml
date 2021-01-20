@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Society</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("UserName")) &&
+                         string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("AdminName")))
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Register">Owner Register</a>
+                }
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("UserName")) &&
+                     string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("AdminName")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a>
+                            </li>
+                        }
+
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("UserName") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Owner Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Maintenance">Add Maintenance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Complaints">Add Complaints</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="ShowExpenses">Show Society Expenses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Owner" asp-action="Events">Show Events</a>
+                            </li>
+
+                        }
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("AdminName") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminHome">Admin Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Maintenance">Show Maintenance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AddExpenses">Add Billing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Complaints">Show Complaints</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AddFlat">Add Flat</a>
+                            </li>
+
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @if (HttpContextAccessor.HttpContext.Session.GetString("UserName") != null || 
+            HttpContextAccessor.HttpContext.Session.GetString("AdminName") != null)
+        {
+            <nav class="nav navbar-nav navbar-right">
+                <a class="navbar-item" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+            </nav>
+        }
+        </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Society - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

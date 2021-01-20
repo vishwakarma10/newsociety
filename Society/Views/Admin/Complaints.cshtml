@@ -1,0 +1,48 @@
+﻿@model List<Society.Models.Complaints>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    List of Society Complaints
+                  
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>FlatNo.</th>
+                                <th>Complaint Title</th>
+                                <th>Description</th>                               
+                                <th>Date</th>
+                               
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @foreach (var post in Model)
+                            {
+
+                            <tr>
+                                <td>@i</td>
+                                <td>@post.FlatNo</td>
+                                <td>@post.ComplaintTitle</td>
+                                <td>@post.Description</td>
+
+                                <td>@post.Date</td>
+                              
+                            </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

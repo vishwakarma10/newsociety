@@ -1,0 +1,114 @@
+﻿@model Society.Models.MasterBilling
+@{
+    ViewData["Title"] = "ShowExpenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @using (Html.BeginForm("ShowBilling", "Owner", FormMethod.Post))
+        {
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Society Expenses
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+
+                                    <th>Bill No.</th>
+                                    <th>Supplier Name</th>
+                                    <th>Item Name</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>GST</th>
+                                    <th>Total Amount</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.itemViewModelList)
+                            {
+
+                                <tr>
+
+                                    <td>@item.BilNo</td>
+                                    <td>@item.SupplierName</td>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.Amount</td>
+                                    <td>@item.GST</td>
+                                    <td>@item.TotalAmount</td>
+
+                                </tr>
+
+
+                            }
+                            </tbody>
+                        </table>
+                        <br />
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                                <td>
+                                    @if (i != Model.CurrentPageIndex)
+                            {
+                                    <a href="javascript:PagerClick(@i);">@i</a>
+                            }
+                            else
+                            {
+                                    <span>@i</span>
+                            }
+                                </td>
+                    }
+                            </tr>
+                        </table>
+                        <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  }
+</div>
+    <script type="text/javascript">
+        function PagerClick(index) {
+            document.getElementById("hfCurrentPageIndex").value = index;
+            document.forms[0].submit();
+        }
+    </script>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+
+            table th {
+                background-color: #B8DBFD;
+                color: #333;
+                font-weight: bold;
+            }
+
+            table th, table td {
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+
+            table, table table td {
+                border: 0px solid #ccc;
+            }
+    </style>
+

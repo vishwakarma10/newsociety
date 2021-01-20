@@ -1,0 +1,54 @@
+﻿@model Society.Models.UserRegister
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Registration
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+                    {
+                    <div class="form-group">
+                        <label class="required">Flat No.</label>
+                        @Html.DropDownListFor(model => model.FlatId, new SelectList(Model.flatList, "FlatId", "FlatNo"), new { @class = "form-control" })
+                    </div>
+                        <div class="form-group">
+                            <label class="required">Owner Name</label>
+                            @Html.TextBoxFor(m => m.OwnerName, new { @class = "form-control", @placeholder = "Owner Name" })
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Mobile Number</label>
+                            @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control", @placeholder = "Mobile Number" })
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Email Id</label>
+                            @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @placeholder = "EmailId" })
+                        </div>
+                        <div class="form-group">
+                            <label class="required">User Name</label>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User Name" })
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Password</label>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" value="Register" class="btn btn-success" />
+                            @if (ViewBag.message != "")
+                            {
+                                <span class="badge badge-danger">@ViewBag.message</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>

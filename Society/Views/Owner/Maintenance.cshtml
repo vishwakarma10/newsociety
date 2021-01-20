@@ -1,0 +1,51 @@
+﻿@model Society.Models.Maintenance
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Add Maintenance
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Maintenance", "Owner", FormMethod.Post))
+                    {
+                        @*<div class="form-group">
+                            <label class="required">Flat No.</label>
+                            @Html.DropDownListFor(model => model.FlatId, new SelectList(Model.flatList, "FlatId", "FlatNo"), new { @class = "form-control" })
+                        </div>*@
+                        <div class="form-group">
+                            <label class="required">Description</label>
+                            @Html.HiddenFor(m=>m.FlatId)
+                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "Description" })
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Amount</label>
+                            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @type = "number", @placeholder = "Amount" })
+                        </div>
+                        <div class="form-group">
+                            <label>CheckNo</label>
+                            @Html.TextBoxFor(m => m.CheckNo, new { @class = "form-control", @placeholder = "Check No." })
+                        </div>
+                        <div class="form-group">
+                            <label>TransactionNo</label>
+                            @Html.TextBoxFor(m => m.TransactionNo, new { @class = "form-control", @placeholder = "Transaction No." })
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" value="Add Maintenance" class="btn btn-success" />
+                            @if (ViewBag.message != "")
+                            {
+                                <span class="badge badge-danger">@ViewBag.message</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .required:after {
+        content: " *";
+        color: red;
+    }
+</style>
